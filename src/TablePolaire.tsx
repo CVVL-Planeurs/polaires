@@ -4,7 +4,8 @@ import { Input, Table, TableCell, TableHead, TableRow,
 
 import { PolaireType } from './types';
 
-export function TablePolaire ({curPolaire, handleInputChange}: {curPolaire: PolaireType, handleInputChange: any})  {
+export function TablePolaire ({curPolaire, handleInputChange}: {curPolaire: PolaireType, 
+  handleInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined })  {
 
   return (
         <>

@@ -8,14 +8,21 @@ export type CalcValuesType = {
   },
   Vfmax: number,  // vitesse  finesse max
   fin_max: number, // finesse max
+
+  vmc : number, // vitesse maccready
+  fin_mc: number, // finesse à vitesse maccready
   f_vz : (x: number) => number // vz en fonction de vi
+  Mt: number, // masse totale au décollage
+  Ca : number // charge alaire
+
+
 
 }
 
 
 export type PolaireType = {
     model: string,
-    mass: number,
+    ref_mass: number,
     max_ballast: number, 
     v1: number, 
     w1: number, 
@@ -32,5 +39,9 @@ export type PolaireType = {
 
 export type ParamsType  ={
     Vzw: number,  // mouvement vertial de la masse d'air, en m/s
-    Vw: number   //   vitesse du vent de face, en km/h
+    Vw: number,   //   vitesse du vent de face, en km/h
+    Mc: number, // calage Mac Cread
+    Mp: number, // masse du pilote
+    Mwb: number, // water ballast
+
 }

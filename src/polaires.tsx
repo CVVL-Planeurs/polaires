@@ -212,7 +212,7 @@ const _polaires =  [
 
 export const polaires : PolaireType[] =  _polaires.map ( (p) => { return {
     model: p[0] as string,
-    mass: p[1] as number,
+    ref_mass: p[1] as number,
     max_ballast: p[2] as number,
     v1: p[3] as number,
     w1: p[4] as number,
