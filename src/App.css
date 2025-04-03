@@ -37,3 +37,9 @@ body {
   /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
+
+.copyright  {
+  font-size: 10px !important;
+  font-style: italic;
+  padding-top: 10px;
+}

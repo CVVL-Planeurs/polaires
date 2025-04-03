@@ -23,7 +23,13 @@ import { CopyrightSharp } from '@mui/icons-material';
 
 function App() {
 
-  const [curPolaire, setCurPolaire] = useState<PolaireType> (polaires[0])
+  let lastPolaireIdx = 0
+  if (localStorage.getItem('curPolaire')) {
+    const idx = polaires.findIndex ( (x) => x.model==localStorage.getItem('curPolaire'))
+    if (idx!=-1) lastPolaireIdx = idx
+  }
+
+  const [curPolaire, setCurPolaire] = useState<PolaireType> (polaires[lastPolaireIdx])
   const [calcValues, setCalcValues] = useState<CalcValuesType> ()
   const [params, setParams] = useState <ParamsType>({Vzw: 0, Vw: 0, Mp: 80, Mwb: 0, Mc:0})
 
@@ -32,7 +38,26 @@ function App() {
   function handleChangePolaire(_: unknown, newPolaire:PolaireType | null) {
     if (! newPolaire) return
     setCurPolaire (newPolaire)
+    localStorage.setItem('curPolaire', newPolaire.model)
   }
+
+  
+  const handleInputChangePolaire = (e:  React.ChangeEvent<HTMLInputElement> ) => {
+    if (!e || !e.target) return 
+    const { name, value } = e.target;
+    setCurPolaire((curPolaire) => ({
+      ...curPolaire,
+      [name]: value,
+    }));
+  };
+
+  function handleChangeParams (name: string, value: unknown): void {
+    setParams ( (params) => ({
+      ...params, 
+        [name]: value
+    }))
+  }
+
 
   function updateCalcValues (){
     
@@ -85,24 +110,9 @@ function App() {
     })
   }
 
-  const handleInputChangePolaire = (e:  React.ChangeEvent<HTMLInputElement> ) => {
-    if (!e || !e.target) return 
-    const { name, value } = e.target;
-    setCurPolaire((curPolaire) => ({
-      ...curPolaire,
-      [name]: value,
-    }));
-  };
-
-  function handleChangeParams (name: string, value: unknown): void {
-    setParams ( (params) => ({
-      ...params, 
-        [name]: value
-    }))
-  }
 
   return  calcValues?  (
-    <Stack spacing={2} alignItems="start">
+    <Stack spacing={4} alignItems="start">
 
 
       <Component title="Polaire du planeur à utiliser">
@@ -202,6 +212,7 @@ function App() {
             step={1}
             unit='L'
             onChange={ (e: number) => handleChangeParams("Mwb", e)}
+            disabled={curPolaire.max_ballast == 0.0}
           ></NumericInput>
           </Grid2>
 
@@ -324,14 +335,15 @@ function App() {
           <Chart 
             calcValues={calcValues}
             params={params}
+            curPolaire={curPolaire}
             ></Chart>
 
-            <Typography color="warning">La polaire est une modélisation mathématique dont les valeurs extrèmes sont approximatives. 
+            <Typography color="warning">La courbe ci-dessus est une modélisation mathématique de la polaire du planeur; les valeurs extrèmes sont approximatives. 
 
             </Typography>
         </Component>
 
-        <Typography> <CopyrightSharp   />Bruno Fleisch, 2025</Typography>
+        <Typography className='copyright'> <CopyrightSharp fontSize='small'/>2025 Bruno Fleisch</Typography>
     </Stack>
   ) : ''
 }

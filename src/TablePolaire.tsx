@@ -9,7 +9,7 @@ export function TablePolaire ({curPolaire, handleInputChange}: {curPolaire: Pola
 
   return (
         <>
-        <Table>
+        <Table size='small'>
         <TableHead>
         <TableRow>
           <TableCell>Vitesse</TableCell>
@@ -19,7 +19,7 @@ export function TablePolaire ({curPolaire, handleInputChange}: {curPolaire: Pola
       <TableBody>
         <TableRow>
           <TableCell>
-            <Input type="number" name="v1" onChange={handleInputChange} value={curPolaire.v1}></Input> Km/h
+            <Input type="number" name="v1" onChange={handleInputChange} value={curPolaire.v1} ></Input> Km/h
           </TableCell>
           <TableCell>
             <Input type="number" name="w1" onChange={handleInputChange} value={curPolaire.w1}></Input> m/s

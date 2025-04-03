@@ -9,9 +9,10 @@ export function NumericInput({
   step = 1, 
   defaultValue = min, 
   unit = "", 
-  onChange 
+  onChange,
+  disabled = false, 
 }: { label: string, min: number, max: number, step: number, defaultValue: number,
-  unit: string, onChange: (x: number) => void
+  unit: string, onChange: (x: number) => void, disabled?: boolean
 }) {
   const [value, setValue] = useState<number>(defaultValue);
 
@@ -23,7 +24,7 @@ export function NumericInput({
 
   return (
     <Box display="flex" flexDirection="column" gap={1} sx={{width: 250}}>
-      {label && <Typography variant="body2">{label}</Typography>}
+      {label && <Typography variant="body2"  color={disabled ? 'textDisabled': ''}>{label}</Typography>}
 
       <Box display="flex" alignItems="center" gap={1}>
 
@@ -35,6 +36,7 @@ export function NumericInput({
             size="small"
             variant="outlined"
             sx={{ width: 100 }}
+            disabled={disabled}
           />
           {unit && <Typography variant="body2">{unit}</Typography>}
 
@@ -46,6 +48,7 @@ export function NumericInput({
             max={max}
             step={step}
             sx={{ width: 100 }}
+            disabled={disabled}
           />
         </Box>
       </Box>

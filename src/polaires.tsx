@@ -5,6 +5,10 @@ import { PolaireType } from './types';
 const _T = (x:string) =>x
 
 // depuis XCSoar PolarStore.cpp
+// SPDX-License-Identifier: GPL-2.0-or-later
+// Copyright The XCSoar Project
+
+
 const _polaires =  [
     [ _T("206 Hornet"), 318, 100, 80, -0.606, 120, -0.99, 160, -1.918, 9.8, 41.666, 100, 227 ],
     [ _T("303 Mosquito"), 450, 0, 100.0, -0.68, 120.0, -0.92, 150.0, -1.45, 9.85, 0.0, 107, 242 ],
