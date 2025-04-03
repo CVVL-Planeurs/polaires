@@ -1,55 +1,46 @@
 import './App.css'
 
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Stack from '@mui/material/Stack';
-import { Autocomplete, Grid2, TextField, Typography, Tooltip, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import {  Typography } from '@mui/material';
 import { lusolve, } from 'mathjs';
 import { Component } from './Component.tsx';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { PolaireType, CalcValuesType, ParamsType } from './types';
 import { Chart } from './Chart';
 import { polaires } from './polaires'
-import { TablePolaire } from './TablePolaire';
 
-import {NumericInput} from './NumericInput.tsx'; 
-import { CopyrightSharp } from '@mui/icons-material';
+import { ResultsTable } from './ResultsTable.tsx';
+import { Copyright } from './Copyright.tsx';
+import { ParamsTable } from './ParamsTable.tsx';
+import { PolaireSelect } from './PolaireSelect.tsx';
 
+
+const DEFAULT_PARAMS = { Vzw: 0, Vw: 0, Mp: 80, Mwb: 0, Mc: 0 };
+const CUR_POLAIRE_KEY = 'curPolaire';
 
 
 function App() {
 
-  let lastPolaireIdx = 0
-  if (localStorage.getItem('curPolaire')) {
-    const idx = polaires.findIndex ( (x) => x.model==localStorage.getItem('curPolaire'))
-    if (idx!=-1) lastPolaireIdx = idx
-  }
+  const lastPolaireIdx = useMemo(() => {
+    const storedPolaire = localStorage.getItem(CUR_POLAIRE_KEY);
+    if (storedPolaire) {
+      const idx = polaires.findIndex((x) => x.model === storedPolaire);
+      return idx !== -1 ? idx : 0;
+    }
+    return 0;
+  }, []);
 
   const [curPolaire, setCurPolaire] = useState<PolaireType> (polaires[lastPolaireIdx])
-  const [calcValues, setCalcValues] = useState<CalcValuesType> ()
-  const [params, setParams] = useState <ParamsType>({Vzw: 0, Vw: 0, Mp: 80, Mwb: 0, Mc:0})
+  const [params, setParams] = useState <ParamsType>(DEFAULT_PARAMS)
+  const calcValues = useMemo <CalcValuesType> ( updateCalcValues, [curPolaire, params])
 
-  useEffect ( updateCalcValues, [curPolaire, params])
-
-  function handleChangePolaire(_: unknown, newPolaire:PolaireType | null) {
+  function handleChangePolaire(newPolaire:PolaireType | null) {
     if (! newPolaire) return
     setCurPolaire (newPolaire)
-    localStorage.setItem('curPolaire', newPolaire.model)
+    localStorage.setItem(CUR_POLAIRE_KEY, newPolaire.model)
   }
 
-  
-  const handleInputChangePolaire = (e:  React.ChangeEvent<HTMLInputElement> ) => {
-    if (!e || !e.target) return 
-    const { name, value } = e.target;
-    setCurPolaire((curPolaire) => ({
-      ...curPolaire,
-      [name]: value,
-    }));
-  };
 
   function handleChangeParams (name: string, value: unknown): void {
     setParams ( (params) => ({
@@ -94,7 +85,7 @@ function App() {
     // vitesse de croisière
     // const vcr = vmc * params.Mc / (params.Mc - f_vz(vmc))
 
-    setCalcValues ({
+    return {
       coefs: {
         a: a, 
         b: b,
@@ -107,7 +98,7 @@ function App() {
       fin_mc: -1*(vmc/3.6)/f_vz (vmc),
       Mt: Mt,
       Ca: Mt / curPolaire.wing_area
-    })
+    }
   }
 
 
@@ -116,234 +107,45 @@ function App() {
 
 
       <Component title="Polaire du planeur à utiliser">
-
-
-        <Autocomplete
-          options={polaires}
-          getOptionLabel={ (p:PolaireType)=>p.model}
-          sx= {{width: 200 }}
-          renderInput={(params) => <TextField {...params} label="Polaires" />}
-          onChange={handleChangePolaire}
-          value={curPolaire}
-          >
-          </Autocomplete>    
-
-          <Accordion>
-          <AccordionSummary
-            aria-controls="panel2-content"
-            id="panel2-header"
-            expandIcon={<ExpandMoreIcon />}
-
-          >
-          <Typography component="span">Points caractéristiques de la polaire</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>Pour la modélisation polynomiale de la polaire du planeur.</Typography>
-
-        <TablePolaire
-            handleInputChange={handleInputChangePolaire}
-            curPolaire={curPolaire}
-            >
-          </TablePolaire>
-        </AccordionDetails>
-      </Accordion>
+        <PolaireSelect
+          onChangePolaire={handleChangePolaire}
+          polaires={polaires}
+          defaultPolaire={polaires[lastPolaireIdx]}
+        ></PolaireSelect>
       </Component>
 
 
 
       <Component title="Paramètres">
-
-        <Grid2 container spacing={5}>
-          <Grid2 size={{xs:12, sm:6, md:4}}>
-            <NumericInput 
-            label="Mouvement vertical de la masse d'air"
-            min={-5}
-            max={0}
-            defaultValue={0}
-            step={.1}
-            unit='m/s'
-            onChange={ (e: number) => handleChangeParams("Vzw", e)}
-          ></NumericInput>
-          </Grid2>
-
-          <Grid2 size={{xs:12, sm:6, md:4}}>
-            <NumericInput 
-            label="Vitesse du vent apparent de face"
-            min={0}
-            max={100}
-            defaultValue={0}
-            step={5}
-            unit='km/h'
-            onChange={ (e: number) => handleChangeParams("Vw", e)}
-          ></NumericInput>
-          </Grid2>
-
-          <Grid2 size={{xs:12, sm:6, md:4}}>
-            <NumericInput 
-            label="Calage MacCready"
-            min={0}
-            max={5}
-            defaultValue={0}
-            step={.1}
-            unit='m/s'
-            onChange={ (e: number) => handleChangeParams("Mc", e)}
-          ></NumericInput>
-          </Grid2>
-
-          
-          <Grid2 size={{xs:12, sm:6, md:4}}>
-            <NumericInput 
-            label="Masse du/des pilote(s) (avec parachute et equipements)"
-            min={50}
-            max={250}
-            defaultValue={80}
-            step={1}
-            unit='Kg'
-            onChange={ (e: number) => handleChangeParams("Mp", e)}
-          ></NumericInput>
-          </Grid2>
-
-          <Grid2 size={{xs:12, sm:6, md:4}}>
-            <NumericInput 
-            label={"Water-Ballast (max : " + curPolaire.max_ballast.toFixed(0) + " Kg )"}
-            min={0}
-            max={curPolaire.max_ballast}
-            defaultValue={0}
-            step={1}
-            unit='L'
-            onChange={ (e: number) => handleChangeParams("Mwb", e)}
-            disabled={curPolaire.max_ballast == 0.0}
-          ></NumericInput>
-          </Grid2>
-
-          <Grid2 size={{xs:12, sm:6, md:4}}>
-            <Tooltip arrow placement="left" title="Masse utilisée pour le calcul de la polaire">
-              <Typography>Masse de réfèrence : {curPolaire.ref_mass} Kg</Typography>
-
-            </Tooltip>
-
-            <Typography>Masse au décollage : {calcValues?.Mt } Kg</Typography>
-            <Typography>Charge alaire: {calcValues?.Ca.toFixed(1) } Kg / m² </Typography>
-
-
-          </Grid2>
-        </Grid2>
-        <Typography color='warning'>Les valeurs indiquées ci-dessus doivent être dans les limites de masse et de centrage
-          autorisées par le constructeur.
-        </Typography>
-
+        <ParamsTable 
+          handleChangeParams={handleChangeParams}
+          curPolaire={curPolaire}
+          calcValues={calcValues}
+          />
       </Component>
 
       <Component title="Résultats des calculs">
-    
-          <Typography variant="h6"></Typography>
-
-          <Table size="small" className='table-calc'>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-
-                </TableCell>
-                <TableCell>
-                  Vol à vitesse de finesse maximale
-                </TableCell>
-                <TableCell>
-                  Vol à vitesse MacCready
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  Finesse sol
-                </TableCell>
-                <TableCell>
-                  { calcValues.fin_max.toFixed(0)}
-                </TableCell>
-                <TableCell>
-                  { calcValues.fin_mc.toFixed(0) }
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell>
-                  Vitesse sol
-                </TableCell>
-                <TableCell>
-                  { calcValues.Vfmax.toFixed(0)} Km/h
-                </TableCell>
-                <TableCell>
-                {calcValues.vmc.toFixed(0)} Km/h
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell>
-                  Speed to fly
-                </TableCell>
-                <TableCell>
-                  {(calcValues.Vfmax + params.Vw).toFixed(0)} Km/h
-                </TableCell>
-                <TableCell>
-                    {(calcValues.vmc + params.Vw).toFixed(0)} Km/h
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell>
-                Taux de chute propre du planeur
-                </TableCell>
-                <TableCell>
-                {(calcValues.f_vz(calcValues.Vfmax)-params.Vzw).toFixed(2)} m/s
-                </TableCell>
-                <TableCell>
-                {(calcValues.f_vz(calcValues.vmc)-params.Vzw).toFixed(2)} m/s
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell>
-                Taux de chute total
-                </TableCell>
-                <TableCell>
-                {(calcValues.f_vz(calcValues.Vfmax)).toFixed(2)} m/s
-                </TableCell>
-                <TableCell>
-                  {(calcValues.f_vz(calcValues.vmc)).toFixed(2)} m/s
-                </TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell>
-                Taux de chute équivalent au vent de face
-                </TableCell>
-                <TableCell>
-                {( params.Vw * calcValues.f_vz(calcValues.Vfmax) / (calcValues.Vfmax) ).toFixed(2)} m/s
-                </TableCell>
-                <TableCell>
-                  
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-
-        </Component>
+        <ResultsTable 
+          calcValues={calcValues}
+          params={params}
+        />
+      </Component>
 
 
+      <Component title="Polaire des vitesses">
+        <Chart 
+          calcValues={calcValues}
+          params={params}
+          curPolaire={curPolaire}
+          ></Chart>
 
-        <Component title="Polaire des vitesses">
-          <Chart 
-            calcValues={calcValues}
-            params={params}
-            curPolaire={curPolaire}
-            ></Chart>
+          <Typography color="warning">
+            La courbe ci-dessus est une modélisation mathématique de la polaire du planeur; les valeurs extrèmes sont approximatives. 
+          </Typography>
+      </Component>
 
-            <Typography color="warning">La courbe ci-dessus est une modélisation mathématique de la polaire du planeur; les valeurs extrèmes sont approximatives. 
+      <Copyright/>
 
-            </Typography>
-        </Component>
-
-        <Typography className='copyright'> <CopyrightSharp fontSize='small'/>2025 Bruno Fleisch</Typography>
     </Stack>
   ) : ''
 }
