@@ -30,7 +30,7 @@ export function Chart  ({calcValues, params, polaire} :
     const f = (tc && v) ?  ((v/3.6)/(-tc)):0
 
     return (
-    <Box sx={{padding:2, background: '#efefef'}}>
+    <Box className="tooltip">
       <Typography>Finesse : {f.toFixed(0)} </Typography>
       <Typography>Taux de chute : {tc.toFixed(2)} m/s </Typography>
     </Box>)

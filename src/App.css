@@ -17,6 +17,15 @@ html {
   }
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  color: black;
+  padding: 20px;
+  border-radius: 20px;
+}
 
 .table-calc thead * {
   color: black !important;

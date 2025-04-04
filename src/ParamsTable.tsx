@@ -1,7 +1,6 @@
 import { Grid2 } from '@mui/material';
 import { CalcValuesType, PolaireType } from './types';
 import { NumericInput } from './NumericInput.tsx';
-import Tooltip from '@mui/material/Tooltip';
 import { Typography} from '@mui/material';
 
 export function ParamsTable(
@@ -76,15 +75,12 @@ export function ParamsTable(
           </Grid2>
 
           <Grid2 size={{xs:12, sm:6, md:4}}>
-            <Tooltip arrow placement="left" title="Masse utilisée pour le calcul de la polaire">
-              <Typography>Masse de réfèrence : {polaire.ref_mass} Kg</Typography>
-
-            </Tooltip>
-
-            <Typography>Masse au décollage : {calcValues?.Mt } Kg</Typography>
-            <Typography>Charge alaire: {calcValues?.Ca.toFixed(1) } Kg / m² </Typography>
-
-
+      
+            <Typography>
+             Masse de réfèrence : {polaire.ref_mass} Kg<br/>
+              Masse au décollage : {calcValues?.Mt } Kg<br/>
+              Charge alaire: {calcValues?.Ca.toFixed(1) } Kg / m² 
+            </Typography>
           </Grid2>
         </Grid2>
         <Typography color='warning'>Les valeurs indiquées ci-dessus doivent être dans les limites de masse et de centrage
