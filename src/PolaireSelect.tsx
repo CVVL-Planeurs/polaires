@@ -27,7 +27,6 @@ export function PolaireSelect (
     <Autocomplete   
           options={polaires}
           getOptionLabel={ (p:PolaireType)=>p.model}
-          sx= {{width: 200 }}
           renderInput={(params) => <TextField {...params} label="Polaires" />}
           onChange={ (_: unknown, newPolaire:PolaireType | null) => {onChangePolaire(newPolaire!); setCurPolaire(newPolaire!)} }
           value={curPolaire}

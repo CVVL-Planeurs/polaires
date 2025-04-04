@@ -39,8 +39,8 @@ export function Chart  ({calcValues, params, polaire} :
 
   return (<>
   <LineChart
-    width={1024}
     height={400}
+    sx={{width: "100%" }}
     xAxis={[{id:'xAxis', data: x, min:-params.Vw, max:(max_speed*1.1)-params.Vw}]}
     yAxis={[{id: 'yAxis', max: 0, min: -10}]}
     series={[

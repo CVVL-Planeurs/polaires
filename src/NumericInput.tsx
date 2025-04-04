@@ -24,7 +24,7 @@ export function NumericInput({
 
   return (
     <Box display="flex" flexDirection="column" gap={1} sx={{width: 250}}>
-      {label && <Typography variant="body2"  color={disabled ? 'textDisabled': ''}>{label}</Typography>}
+      {label && <Typography  color={disabled ? 'textDisabled': 'text.primary'}>{label}</Typography>}
 
       <Box display="flex" alignItems="center" gap={1}>
 
