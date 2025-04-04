@@ -4,16 +4,16 @@ import { useMemo, useState } from 'react'
 import Stack from '@mui/material/Stack';
 import {  Typography } from '@mui/material';
 import { lusolve, } from 'mathjs';
-import { Component } from './Component.tsx';
 
 import { PolaireType, CalcValuesType, ParamsType } from './types';
-import { Chart } from './Chart';
 import { polaires } from './polaires'
 
+import { Component } from './Component.tsx';
+import { PolaireSelect } from './PolaireSelect.tsx';
+import { ParamsTable } from './ParamsTable.tsx';
+import { Chart } from './Chart';
 import { ResultsTable } from './ResultsTable.tsx';
 import { Copyright } from './Copyright.tsx';
-import { ParamsTable } from './ParamsTable.tsx';
-import { PolaireSelect } from './PolaireSelect.tsx';
 
 
 const DEFAULT_PARAMS = { Vzw: 0, Vw: 0, Mp: 80, Mwb: 0, Mc: 0 };
@@ -33,16 +33,15 @@ function App() {
 
   const [curPolaire, setCurPolaire] = useState<PolaireType> (polaires[lastPolaireIdx])
   const [params, setParams] = useState <ParamsType>(DEFAULT_PARAMS)
-  const calcValues = useMemo <CalcValuesType> ( updateCalcValues, [curPolaire, params])
+  const calcValues = useMemo <CalcValuesType> ( runCalculations, [curPolaire, params])
 
-  function handleChangePolaire(newPolaire:PolaireType | null) {
-    if (! newPolaire) return
+  function handleChangePolaire(newPolaire:PolaireType) {
     setCurPolaire (newPolaire)
     localStorage.setItem(CUR_POLAIRE_KEY, newPolaire.model)
   }
 
 
-  function handleChangeParams (name: string, value: unknown): void {
+  function handleChangeParams (name: string, value: number|string): void {
     setParams ( (params) => ({
       ...params, 
         [name]: value
@@ -50,7 +49,7 @@ function App() {
   }
 
 
-  function updateCalcValues (){
+  function runCalculations (){
     
     // résolution des coefficients de la polaire
     const coefs = lusolve ( 
@@ -65,7 +64,7 @@ function App() {
     let b = coefs[1][0]
     let c = coefs[2][0]
 
-    // masse total au décollage
+    // masse totale au décollage
     const Mt = (curPolaire.empty_mass?? curPolaire.ref_mass) + params.Mp + params.Mwb
 
     // facteur de charge de la masse au décollage
@@ -86,25 +85,20 @@ function App() {
     // const vcr = vmc * params.Mc / (params.Mc - f_vz(vmc))
 
     return {
-      coefs: {
-        a: a, 
-        b: b,
-        c: c, 
-      },
-      Vfmax: vfmax,
-      f_vz: f_vz, 
-      vmc: vmc, 
+      coefs: { a,b,c },
+      vfmax,
+      f_vz, 
+      vmc, 
       fin_max: -1*(vfmax/3.6)/f_vz (vfmax),
       fin_mc: -1*(vmc/3.6)/f_vz (vmc),
-      Mt: Mt,
+      Mt,
       Ca: Mt / curPolaire.wing_area
     }
   }
 
 
-  return  calcValues?  (
+  return   (
     <Stack spacing={4} alignItems="start">
-
 
       <Component title="Polaire du planeur à utiliser">
         <PolaireSelect
@@ -114,12 +108,10 @@ function App() {
         ></PolaireSelect>
       </Component>
 
-
-
       <Component title="Paramètres">
         <ParamsTable 
-          handleChangeParams={handleChangeParams}
-          curPolaire={curPolaire}
+          onChangeParams={handleChangeParams}
+          polaire={curPolaire}
           calcValues={calcValues}
           />
       </Component>
@@ -131,12 +123,11 @@ function App() {
         />
       </Component>
 
-
       <Component title="Polaire des vitesses">
         <Chart 
           calcValues={calcValues}
           params={params}
-          curPolaire={curPolaire}
+          polaire={curPolaire}
           ></Chart>
 
           <Typography color="warning">
@@ -147,7 +138,7 @@ function App() {
       <Copyright/>
 
     </Stack>
-  ) : ''
+  ) 
 }
 
 export default App

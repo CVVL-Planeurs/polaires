@@ -4,8 +4,8 @@ import { Input, Table, TableCell, TableHead, TableRow,
 
 import { PolaireType } from './types';
 
-export function TablePolaire ({curPolaire, handleInputChange}: {curPolaire: PolaireType, 
-  handleInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined })  {
+export function TablePolaire ({curPolaire, onChange}: {curPolaire: PolaireType, 
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined })  {
 
   return (
         <>
@@ -19,26 +19,26 @@ export function TablePolaire ({curPolaire, handleInputChange}: {curPolaire: Pola
       <TableBody>
         <TableRow>
           <TableCell>
-            <Input type="number" name="v1" onChange={handleInputChange} value={curPolaire.v1} ></Input> Km/h
+            <Input type="number" name="v1" onChange={onChange} value={curPolaire.v1} ></Input> Km/h
           </TableCell>
           <TableCell>
-            <Input type="number" name="w1" onChange={handleInputChange} value={curPolaire.w1}></Input> m/s
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <Input type="number" name="v2" onChange={handleInputChange} value={curPolaire.v2}></Input> Km/h
-          </TableCell>
-          <TableCell>
-            <Input type="number" name="w2" onChange={handleInputChange} value={curPolaire.w2}></Input> m/s
+            <Input type="number" name="w1" onChange={onChange} value={curPolaire.w1}></Input> m/s
           </TableCell>
         </TableRow>
         <TableRow>
           <TableCell>
-            <Input type="number" name="v3" onChange={handleInputChange} value={curPolaire.v3}></Input> Km/h
+            <Input type="number" name="v2" onChange={onChange} value={curPolaire.v2}></Input> Km/h
           </TableCell>
           <TableCell>
-            <Input type="number" name="w3" onChange={handleInputChange} value={curPolaire.w3}></Input> m/s
+            <Input type="number" name="w2" onChange={onChange} value={curPolaire.w2}></Input> m/s
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Input type="number" name="v3" onChange={onChange} value={curPolaire.v3}></Input> Km/h
+          </TableCell>
+          <TableCell>
+            <Input type="number" name="w3" onChange={onChange} value={curPolaire.w3}></Input> m/s
           </TableCell>
         </TableRow>
       </TableBody>

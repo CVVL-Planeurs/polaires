@@ -47,7 +47,7 @@ export function PolaireSelect (
           <Typography>Pour la modélisation polynomiale de la polaire du planeur.</Typography>
 
         <TablePolaire
-            handleInputChange={handleInputChangePolaire}
+            onChange={handleInputChangePolaire}
             curPolaire={curPolaire}
             >
           </TablePolaire>

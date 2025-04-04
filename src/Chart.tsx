@@ -3,13 +3,13 @@
 import { CalcValuesType, ParamsType, PolaireType } from './types';
 import { ChartsXAxis, ChartsYAxis, LineChart,ChartsReferenceLine, ChartsAxisContentProps } from '@mui/x-charts';
 import { Box, Typography } from '@mui/material';
-export function Chart  ({calcValues, params, curPolaire} : 
+export function Chart  ({calcValues, params, polaire} : 
   { calcValues: CalcValuesType,
     params: ParamsType,
-    curPolaire: PolaireType
+    polaire: PolaireType
 }) {
 
-  const max_speed = Math.max(curPolaire.v_no, 200)
+  const max_speed = Math.max(polaire.v_no, 200)
   const min_speed = 50
 
   const range = (start: number, stop: number, step = 1) =>
@@ -67,8 +67,8 @@ export function Chart  ({calcValues, params, curPolaire} :
       <ChartsXAxis axisId='xAxis' position='top' label='Vitesse SOL (km/h)'></ChartsXAxis>
       <ChartsYAxis axisId='yAxis' position='left' label='Vitesse verticale (m/s)'></ChartsYAxis>
 
-      <ChartsReferenceLine x={calcValues.Vfmax} label="Finesse max" lineStyle={{ stroke: 'red'}} labelAlign='start' />
-      <ChartsReferenceLine y={calcValues.f_vz(calcValues.Vfmax)} label="Finesse max" lineStyle={{ stroke: 'red'}} labelAlign='start' />
+      <ChartsReferenceLine x={calcValues.vfmax} label="Finesse max" lineStyle={{ stroke: 'red'}} labelAlign='start' />
+      <ChartsReferenceLine y={calcValues.f_vz(calcValues.vfmax)} label="Finesse max" lineStyle={{ stroke: 'red'}} labelAlign='start' />
 
       {/* <ChartsReferenceLine x={-1*calcValues.coefs.b / (2*calcValues.coefs.a)}   label="Tx chute min" */}
       {/* labelAlign='end'></ChartsReferenceLine> */}

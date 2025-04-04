@@ -6,7 +6,7 @@ export type CalcValuesType = {
     b: number,
     c: number
   },
-  Vfmax: number,  // vitesse  finesse max
+  vfmax: number,  // vitesse  finesse max
   fin_max: number, // finesse max
 
   vmc : number, // vitesse maccready

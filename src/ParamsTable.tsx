@@ -5,8 +5,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { Typography} from '@mui/material';
 
 export function ParamsTable(
-    {handleChangeParams, curPolaire, calcValues}: 
-    {handleChangeParams: (param: string, value: number) => void, curPolaire: PolaireType, calcValues: CalcValuesType
+    {onChangeParams, polaire, calcValues}: 
+    {onChangeParams: (param: string, value: number) => void, polaire: PolaireType, calcValues: CalcValuesType
     },
 ) {
 
@@ -21,7 +21,7 @@ export function ParamsTable(
             defaultValue={0}
             step={.1}
             unit='m/s'
-            onChange={ (e: number) => handleChangeParams("Vzw", e)}
+            onChange={ (e: number) => onChangeParams("Vzw", e)}
           ></NumericInput>
           </Grid2>
 
@@ -33,7 +33,7 @@ export function ParamsTable(
             defaultValue={0}
             step={5}
             unit='km/h'
-            onChange={ (e: number) => handleChangeParams("Vw", e)}
+            onChange={ (e: number) => onChangeParams("Vw", e)}
           ></NumericInput>
           </Grid2>
 
@@ -45,7 +45,7 @@ export function ParamsTable(
             defaultValue={0}
             step={.1}
             unit='m/s'
-            onChange={ (e: number) => handleChangeParams("Mc", e)}
+            onChange={ (e: number) => onChangeParams("Mc", e)}
           ></NumericInput>
           </Grid2>
 
@@ -58,26 +58,26 @@ export function ParamsTable(
             defaultValue={80}
             step={1}
             unit='Kg'
-            onChange={ (e: number) => handleChangeParams("Mp", e)}
+            onChange={ (e: number) => onChangeParams("Mp", e)}
           ></NumericInput>
           </Grid2>
 
           <Grid2 size={{xs:12, sm:6, md:4}}>
             <NumericInput 
-            label={"Water-Ballast (max : " + curPolaire.max_ballast.toFixed(0) + " L )"}
+            label={"Water-Ballast (max : " + polaire.max_ballast.toFixed(0) + " L )"}
             min={0}
-            max={curPolaire.max_ballast}
+            max={polaire.max_ballast}
             defaultValue={0}
             step={1}
             unit='L'
-            onChange={ (e: number) => handleChangeParams("Mwb", e)}
-            disabled={curPolaire.max_ballast == 0.0}
+            onChange={ (e: number) => onChangeParams("Mwb", e)}
+            disabled={polaire.max_ballast == 0.0}
           ></NumericInput>
           </Grid2>
 
           <Grid2 size={{xs:12, sm:6, md:4}}>
             <Tooltip arrow placement="left" title="Masse utilisée pour le calcul de la polaire">
-              <Typography>Masse de réfèrence : {curPolaire.ref_mass} Kg</Typography>
+              <Typography>Masse de réfèrence : {polaire.ref_mass} Kg</Typography>
 
             </Tooltip>
 

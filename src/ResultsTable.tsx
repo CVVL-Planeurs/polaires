@@ -39,7 +39,7 @@ export function ResultsTable ({calcValues, params}: {calcValues: CalcValuesType,
             Vitesse sol
         </TableCell>
         <TableCell>
-            { calcValues.Vfmax.toFixed(0)} Km/h
+            { calcValues.vfmax.toFixed(0)} Km/h
         </TableCell>
         <TableCell>
         {calcValues.vmc.toFixed(0)} Km/h
@@ -51,7 +51,7 @@ export function ResultsTable ({calcValues, params}: {calcValues: CalcValuesType,
             Speed to fly
         </TableCell>
         <TableCell>
-            {(calcValues.Vfmax + params.Vw).toFixed(0)} Km/h
+            {(calcValues.vfmax + params.Vw).toFixed(0)} Km/h
         </TableCell>
         <TableCell>
             {(calcValues.vmc + params.Vw).toFixed(0)} Km/h
@@ -63,7 +63,7 @@ export function ResultsTable ({calcValues, params}: {calcValues: CalcValuesType,
         Taux de chute propre du planeur
         </TableCell>
         <TableCell>
-        {(calcValues.f_vz(calcValues.Vfmax)-params.Vzw).toFixed(2)} m/s
+        {(calcValues.f_vz(calcValues.vfmax)-params.Vzw).toFixed(2)} m/s
         </TableCell>
         <TableCell>
         {(calcValues.f_vz(calcValues.vmc)-params.Vzw).toFixed(2)} m/s
@@ -75,7 +75,7 @@ export function ResultsTable ({calcValues, params}: {calcValues: CalcValuesType,
         Taux de chute total
         </TableCell>
         <TableCell>
-        {(calcValues.f_vz(calcValues.Vfmax)).toFixed(2)} m/s
+        {(calcValues.f_vz(calcValues.vfmax)).toFixed(2)} m/s
         </TableCell>
         <TableCell>
             {(calcValues.f_vz(calcValues.vmc)).toFixed(2)} m/s
@@ -87,7 +87,7 @@ export function ResultsTable ({calcValues, params}: {calcValues: CalcValuesType,
         Taux de chute équivalent au vent de face
         </TableCell>
         <TableCell>
-        {( params.Vw * calcValues.f_vz(calcValues.Vfmax) / (calcValues.Vfmax) ).toFixed(2)} m/s
+        {( params.Vw * calcValues.f_vz(calcValues.vfmax) / (calcValues.vfmax) ).toFixed(2)} m/s
         </TableCell>
         <TableCell>
             
