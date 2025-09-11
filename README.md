@@ -4,6 +4,13 @@
 
 Ce projet fournit des outils pour le calcul et la visualisation des polaires de planeurs. Il permet à l'utilisateur de sélectionner un modèle de planeur, d'ajuster différents paramètres de vol et environnementaux, et de visualiser à la fois les résultats numériques et les courbes polaires interactives. Ce logiciel s'adresse principalement aux pilotes de planeur, instructeurs et passionnés d’aviation désireux d’analyser la performance de leur appareil.
 
+## Copie d'écran
+
+<img width="824" height="423" alt="image" src="https://github.com/user-attachments/assets/e8883dc6-3390-4db6-be34-c928520a6f4d" />
+
+<img width="855" height="620" alt="{E94155CF-F6D1-4808-A042-5D3914F3C950}" src="https://github.com/user-attachments/assets/dd324d78-0bab-47bc-8bc5-d450f2d11745" />
+
+
 ## Fonctionnalités
 
 - **Base de données de planeurs** : Liste complète de modèles de planeurs avec leurs données de polaire (taux de chute, vitesses, envergures, et autres paramètres).
