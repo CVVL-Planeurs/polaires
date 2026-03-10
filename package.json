@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "homepage": ".", 
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-alpha.6",
     "@emotion/react": "^11.14.0",
